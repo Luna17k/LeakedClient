@@ -14,12 +14,12 @@
 		public int Login(string email, string password)
 		{
 			LoginRequestData data = new LoginRequestData(email, password);
-			string id = "FAILED";
-			string json = "";
+			string json = "FAILED";
 
 			try
 			{
-				id = RequestHandler.RequestLogin(data);
+				string id = RequestHandler.RequestLogin(data);
+				
 				json = RequestHandler.RequestAccount(data);
 
 				if (id == "FAILED")
@@ -33,6 +33,7 @@
 			}
 
 			SelectedAccount = Json.Deserialize<AccountInfo>(json);
+			RequestHandler.SetSession(SelectedAccount.id);
 
 			launcherConfig.Email = email;
 			launcherConfig.Password = password;
@@ -43,13 +44,12 @@
 		public int Register(string email, string password, string edition)
 		{
 			RegisterRequestData data = new RegisterRequestData(email, password, edition);
-			string registerStatus = "FAILED";
 
 			try
 			{
-				registerStatus = RequestHandler.RequestRegister(data);
+				string json = RequestHandler.RequestRegister(data);
 
-				if (registerStatus != "OK")
+				if (json != "OK")
 				{
 					return -1;
 				}
@@ -59,11 +59,11 @@
 				return -2;
 			}
 
-			int loginStatus = Login(email, password);
+			int status = Login(email, password);
 
-			if (loginStatus != 1)
+			if (status != 1)
 			{
-				switch (loginStatus)
+				switch (status)
 				{
 					case -1:
 						return -3;
@@ -79,11 +79,10 @@
 		public int Remove()
 		{
 			LoginRequestData data = new LoginRequestData(SelectedAccount.email, SelectedAccount.password);
-			string json = "FAILED";
 
 			try
 			{
-				json = RequestHandler.RequestAccount(data);
+				string json = RequestHandler.RequestAccount(data);
 
 				if (json != "OK")
 				{
@@ -106,11 +105,10 @@
 		public int ChangeEmail(string email)
 		{
 			ChangeRequestData data = new ChangeRequestData(SelectedAccount.email, SelectedAccount.password, email);
-			string json = "FAILED";
 
 			try
 			{
-				json = RequestHandler.RequestChangeEmail(data);
+				string json = RequestHandler.RequestChangeEmail(data);
 
 				if (json != "OK")
 				{
@@ -131,11 +129,10 @@
 		public int ChangePassword(string password)
 		{
 			ChangeRequestData data = new ChangeRequestData(SelectedAccount.email, SelectedAccount.password, password);
-			string json = "FAILED";
 
 			try
 			{
-				json = RequestHandler.RequestChangePassword(data);
+				string json = RequestHandler.RequestChangePassword(data);
 
 				if (json != "OK")
 				{
@@ -156,11 +153,10 @@
 		public int Wipe(string edition)
 		{
 			RegisterRequestData data = new RegisterRequestData(SelectedAccount.email, SelectedAccount.password, edition);
-			string json = "FAILED";
 
 			try
 			{
-				json = RequestHandler.RequestWipe(data);
+				string json = RequestHandler.RequestWipe(data);
 
 				if (json != "OK")
 				{

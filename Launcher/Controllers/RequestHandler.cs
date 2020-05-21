@@ -2,11 +2,21 @@
 {
 	public static class RequestHandler
 	{
-		private static Request request = new Request();
+		private static Request request;
+
+		static RequestHandler()
+		{
+			request = new Request(null, "https://127.0.0.1");
+		}
 
 		public static string GetBackendUrl()
 		{
 			return request.RemoteEndPoint;
+		}
+
+		public static void SetSession(string session)
+		{
+			Request.Session = session;
 		}
 
 		public static void ChangeBackendUrl(string backendUrl)
@@ -16,7 +26,7 @@
 
 		public static string RequestConnect()
 		{
-			return request.Send("/launcher/server/connect", "");
+			return request.Send("/launcher/server/connect");
 		}
 
 		public static string RequestLogin(LoginRequestData data)
