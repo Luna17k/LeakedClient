@@ -61,7 +61,7 @@ namespace Launcher
 			string tempDir = @"Battlestate Games\EscapeFromTarkov";
 			DirectoryInfo directoryInfo = new DirectoryInfo(Path.Combine(Path.GetTempPath(), tempDir));
 
-			if (!Directory.Exists(tempDir))
+			if (!directoryInfo.Exists)
 			{
 				return;
 			}
